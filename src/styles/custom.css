@@ -1,0 +1,157 @@
+/* Estilos customizados para o manual do Plann.er */
+
+:root {
+  --sl-color-accent-low: #84cc1620;
+  --sl-color-accent: #84cc16;
+  --sl-color-accent-high: #65a30d;
+  --sl-font-system: "Inter", system-ui, sans-serif;
+  --sl-font-code: "JetBrains Mono", monospace;
+}
+
+/* Tema escuro */
+:root[data-theme="dark"] {
+  --sl-color-bg: #18181b;
+  --sl-color-bg-nav: #27272a;
+  --sl-color-bg-sidebar: #27272a;
+  --sl-color-bg-inline-code: #3f3f46;
+  --sl-color-text: #fafafa;
+  --sl-color-text-accent: #d9f99d;
+  --sl-color-hairline: #3f3f46;
+  --sl-color-selection-bg: #84cc1640;
+}
+
+/* Aumentando o tamanho do ícone do GitHub */
+.social-icons a[href*="github"] svg {
+  width: 28px;
+  height: 28px;
+}
+
+/* Melhorando a visibilidade dos ícones nos cards */
+.card .icon {
+  color: var(--sl-color-accent) !important;
+  background-color: var(--sl-color-accent-low) !important;
+  border: 2px solid var(--sl-color-accent) !important;
+}
+
+/* Tema escuro: cor contrastante para ícones */
+:root[data-theme="dark"] .card .icon {
+  color: var(--sl-color-white) !important;
+  background-color: var(--sl-color-accent) !important;
+}
+
+/* Estilo para breadcrumbs */
+.breadcrumbs {
+  display: flex;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  color: var(--sl-color-gray-3);
+}
+
+.breadcrumbs a {
+  color: var(--sl-color-accent);
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumbs .separator {
+  margin: 0 0.5rem;
+}
+
+/* Botões de navegação no tutorial */
+.tutorial-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--sl-color-hairline);
+}
+
+.tutorial-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--sl-color-bg-nav);
+  color: var(--sl-color-text);
+  text-decoration: none;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.tutorial-nav a:hover {
+  background-color: var(--sl-color-accent);
+  color: #18181b;
+}
+
+/* Estilo para as caixas de dicas */
+.tip-box {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid var(--sl-color-accent);
+  background-color: var(--sl-color-accent-low);
+}
+
+.tip-box__title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+/* Estilo para imagens de exemplo */
+.example-image {
+  border-radius: 0.5rem;
+  border: 1px solid var(--sl-color-hairline);
+  max-width: 100%;
+  margin: 1.5rem 0;
+}
+
+/* Estilo para a tabela de conteúdo */
+.toc-container {
+  position: sticky;
+  top: 4rem;
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide {
+  animation: slideIn 0.5s ease-out;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .toc-container {
+    display: none;
+  }
+}
