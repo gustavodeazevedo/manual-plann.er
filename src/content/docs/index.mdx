@@ -4,23 +4,19 @@ description: Manual completo para planejar suas viagens com o Plann.er.
 template: splash
 hero:
   tagline: Planeje suas viagens com facilidade e organização!
-  image:
-    file: ../../assets/logo.svg
   actions:
-    - text: Começar agora
+    - text: Consulte o manual
       link: /getting-started/introduction/
       icon: right-arrow
-    - text: Ver demonstração
-      link: https://plann-er.vercel.app
-      icon: external
-      variant: minimal
+  style: |
+    text-align: center;
 ---
 
 import { Card, CardGrid } from "@astrojs/starlight/components";
 
 ## Conheça o Plann.er
 
-<CardGrid stagger>
+<CardGrid stagger class="gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
   <Card title="Organização Completa">
     Crie sua viagem, adicione destinos, defina datas e convide amigos para
     planejar juntos.

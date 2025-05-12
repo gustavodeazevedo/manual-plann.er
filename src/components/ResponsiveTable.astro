@@ -1,0 +1,192 @@
+---
+// ResponsiveTable.astro - Componente para tabelas responsivas
+---
+
+<style>
+  .responsive-table-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5rem 0;
+    position: relative;
+  }
+    /* Indicador de rolagem */
+  .responsive-table-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 15px;
+    background: linear-gradient(to right, transparent, rgba(0,0,0,0.05));
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .responsive-table-container.has-overflow::after {
+    opacity: 1;
+  }
+  
+  /* Indicador visual de rolagem para dispositivos móveis */
+  .scroll-hint {
+    display: none;
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    background-color: var(--sl-color-accent);
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    font-size: 12px;
+    opacity: 0.8;
+    animation: pulse 2s infinite;
+    pointer-events: none;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+  }
+  
+  .responsive-table-container.has-overflow .scroll-hint {
+    display: block;
+  }
+  
+  /* Estilos para a tabela */
+  .responsive-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+  
+  .responsive-table th,
+  .responsive-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--sl-color-hairline);
+  }
+  
+  .responsive-table th {
+    background-color: var(--sl-color-bg-nav);
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  
+  /* Hover estilo para melhor leitura */
+  .responsive-table tbody tr:hover {
+    background-color: var(--sl-color-bg-selection);
+  }
+  
+  /* Responsividade para telas pequenas */
+  @media (max-width: 640px) {
+    .responsive-table {
+      font-size: 0.85rem;
+    }
+    
+    .responsive-table th,
+    .responsive-table td {
+      padding: 0.5rem;
+    }
+  }
+  
+  /* Para tabelas que precisam ser exibidas como cards em telas pequenas */
+  .responsive-table.stack-on-mobile {
+    display: block;
+  }
+  
+  @media (max-width: 480px) {
+    .responsive-table.stack-on-mobile thead {
+      display: none;
+    }
+    
+    .responsive-table.stack-on-mobile tbody, 
+    .responsive-table.stack-on-mobile tr, 
+    .responsive-table.stack-on-mobile td {
+      display: block;
+      width: 100%;
+    }
+    
+    .responsive-table.stack-on-mobile tr {
+      margin-bottom: 1rem;
+      border: 1px solid var(--sl-color-hairline);
+      border-radius: 0.25rem;
+    }
+    
+  .responsive-table.stack-on-mobile td {
+      border: none;
+      border-bottom: 1px solid var(--sl-color-hairline);
+      position: relative;
+      padding-left: 50%;
+      text-align: right;
+    }
+    
+    .responsive-table.stack-on-mobile td:last-child {
+      border-bottom: none;
+    }
+    
+    .responsive-table.stack-on-mobile td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 0.5rem;
+      width: 45%;
+      white-space: nowrap;
+      font-weight: 600;
+      text-align: left;
+    }
+    
+    /* Melhoria de acessibilidade para tabelas em dispositivos móveis */
+    .responsive-table:focus {
+      outline: 2px solid var(--sl-color-accent);
+      outline-offset: 2px;
+    }
+  }
+</style>
+
+<script>
+  // Detectar se a tabela tem conteúdo que excede a largura visível
+  document.addEventListener('DOMContentLoaded', () => {
+    const containers = document.querySelectorAll('.responsive-table-container');
+    
+  function checkOverflow() {
+      containers.forEach(container => {
+        const table = container.querySelector('table');
+        if (table) {
+          container.classList.toggle('has-overflow', table.scrollWidth > container.clientWidth);
+        }
+      });
+    }
+    
+    // Verificar no carregamento e quando redimensionar a janela
+    checkOverflow();
+    window.addEventListener('resize', checkOverflow);
+    
+    // Para tabelas que usam o modo de empilhamento em dispositivos móveis
+    const stackTables = document.querySelectorAll('.responsive-table.stack-on-mobile');
+    stackTables.forEach(table => {
+      const headerTexts = Array.from(table.querySelectorAll('th')).map(th => th.textContent);
+      
+      table.querySelectorAll('tbody tr').forEach(row => {
+        Array.from(row.querySelectorAll('td')).forEach((cell, index) => {
+          if (headerTexts[index]) {
+            cell.setAttribute('data-label', headerTexts[index]);
+          }
+        });
+      });
+    });
+  });
+</script>
+
+<div class="responsive-table-container">
+  <table class={`responsive-table ${Astro.props.stackOnMobile ? 'stack-on-mobile' : ''}`} tabindex="0">
+    <slot />
+  </table>
+  <div class="scroll-hint">→</div>
+</div>
+</div>

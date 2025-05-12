@@ -1,40 +1,78 @@
-# Starlight Starter Kit: Basics
+# Manual do Usuário do Plann.er
 
-[![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
+Este repositório contém a documentação oficial e manual do usuário para o [Plann.er](https://github.com/gustavodeazevedo/plann.er), uma aplicação web para planejamento colaborativo de viagens.
 
-```
-npm create astro@latest -- --template starlight
-```
+## 📱 Totalmente Responsivo
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/starlight/tree/main/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/starlight/tree/main/examples/basics)
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/withastro/starlight&create_from_path=examples/basics)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fwithastro%2Fstarlight%2Ftree%2Fmain%2Fexamples%2Fbasics&project-name=my-starlight-docs&repository-name=my-starlight-docs)
+Este manual foi projetado para ser totalmente responsivo, garantindo uma experiência de usuário perfeita em qualquer dispositivo:
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+- **Desktop**: Experiência completa com navegação lateral e recursos avançados
+- **Tablet**: Layout otimizado para telas médias
+- **Smartphone**: Interface adaptada para telas pequenas e interações por toque
 
-## 🚀 Project Structure
+### Recursos Responsivos Implementados
 
-Inside of your Astro + Starlight project, you'll see the following folders and files:
+- **Meta tags responsivas**: Configuração correta do viewport para diferentes dispositivos
+- **Imagens otimizadas**: Componente `Picture` para carregamento eficiente
+- **Tabelas responsivas**: Componente `ResponsiveTable` para visualização em qualquer tela
+- **Layout adaptativo**: Ajuste automático de menus e conteúdo
+- **Tipografia responsiva**: Tamanhos de fonte otimizados para legibilidade
+- **Área de toque aumentada**: Melhoria de acessibilidade para interações por toque
+- **Estilos de impressão**: Formatação otimizada para impressão
+
+## 🚀 Estrutura do Projeto
 
 ```
 .
 ├── public/
+│   └── favicon.svg
 ├── src/
-│   ├── assets/
+│   ├── assets/           # Imagens e recursos estáticos
+│   ├── components/       # Componentes Astro reutilizáveis
+│   │   ├── Layout.astro  # Layout principal (responsivo)
+│   │   ├── Picture.astro # Componente de imagem responsiva
+│   │   └── ResponsiveTable.astro # Tabelas responsivas
 │   ├── content/
-│   │   ├── docs/
-│   └── content.config.ts
+│   │   └── docs/         # Conteúdo da documentação em Markdown
+│   ├── scripts/
+│   │   └── responsive.js # Funcionalidades responsivas
+│   └── styles/
+│       ├── custom.css    # Estilos customizados
+│       └── print.css     # Estilos para impressão
 ├── astro.config.mjs
-├── package.json
-└── tsconfig.json
+└── tailwind.config.js
 ```
 
-Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
+## 📚 Guias de Referência
 
-Images can be added to `src/assets/` and embedded in Markdown with a relative link.
+O manual inclui páginas de referência específicas sobre responsividade:
 
-Static assets, like favicons, can be placed in the `public/` directory.
+- **Componentes Responsivos**: Guia sobre como usar componentes responsivos
+- **Visualização Responsiva**: Demonstração de como o manual se adapta a diferentes dispositivos
+
+## 🧪 Testando a Responsividade
+
+Para testar a responsividade do manual:
+
+1. Clone este repositório
+2. Instale as dependências com `npm install`
+3. Execute `npm run dev` para iniciar o servidor de desenvolvimento
+4. Teste em diferentes dispositivos ou use as ferramentas de emulação de dispositivo do seu navegador
+
+## 📋 Boas Práticas para Conteúdo Responsivo
+
+Ao adicionar novo conteúdo ao manual:
+
+- Use os componentes responsivos fornecidos para imagens e tabelas
+- Prefira parágrafos curtos para melhor legibilidade em dispositivos móveis
+- Teste o conteúdo em diferentes tamanhos de tela
+- Utilize cabeçalhos hierárquicos para estruturar o conteúdo
+
+## 🔧 Tecnologias Utilizadas
+
+- [Astro](https://astro.build)
+- [Starlight](https://starlight.astro.build)
+- [Tailwind CSS](https://tailwindcss.com)
 
 ## 🧞 Commands
 

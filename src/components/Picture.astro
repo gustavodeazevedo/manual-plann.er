@@ -1,0 +1,252 @@
+---
+// Picture.astro - Componente para imagens responsivas
+// Este componente ajuda a exibir imagens otimizadas para diferentes tamanhos de tela
+---
+
+<script>
+  // Lazily load images for better performance
+  document.addEventListener('DOMContentLoaded', () => {
+    const images = document.querySelectorAll('img[data-src]');
+    const config = {
+      rootMargin: '50px 0px',
+      threshold: 0.01
+    };
+
+    const observer = new IntersectionObserver((entries, self) => {      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target as HTMLImageElement;
+          const src = img.getAttribute('data-src');
+          if (src) {
+            img.setAttribute('src', src);
+            img.onload = function() {
+              img.removeAttribute('data-src');
+              img.classList.add('loaded');
+            };
+            self.unobserve(img);
+          }
+        }
+      });
+    }, config);
+
+    images.forEach(img => {
+      observer.observe(img);
+    });
+    
+    // Adicionar funcionalidade de zoom para dispositivos móveis
+    const imageContainers = document.querySelectorAll('.image-container');
+    
+    imageContainers.forEach(container => {
+      // Criar botões de zoom se estiver em um dispositivo móvel
+      if (window.innerWidth <= 768) {
+        const img = container.querySelector('img');
+        const zoomControls = document.createElement('div');
+        zoomControls.className = 'zoom-controls';
+        
+        const zoomBtn = document.createElement('button');
+        zoomBtn.className = 'zoom-btn';
+        zoomBtn.innerHTML = '+';
+        zoomBtn.setAttribute('aria-label', 'Ampliar imagem');
+        
+        zoomControls.appendChild(zoomBtn);
+        container.appendChild(zoomControls);
+        
+        // Criar botão de fechar zoom
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'close-zoom';
+        closeBtn.innerHTML = '×';
+        closeBtn.setAttribute('aria-label', 'Fechar visualização ampliada');
+        container.appendChild(closeBtn);
+          // Manipular clique no botão de zoom
+        zoomBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          container.classList.add('zoomed');
+          document.body.style.overflow = 'hidden'; // Prevenir rolagem
+        });
+        
+        // Manipular clique no botão de fechar
+        closeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          container.classList.remove('zoomed');
+          document.body.style.overflow = '';
+        });
+        
+        // Fechar zoom ao clicar na imagem ampliada
+        if (img) {
+          img.addEventListener('click', () => {
+            if (container.classList.contains('zoomed')) {
+              container.classList.remove('zoomed');
+              document.body.style.overflow = '';
+            }
+          });
+        }
+      }
+        // Adicionar atributo para melhorar a acessibilidade
+      const img = container.querySelector('img');
+      if (img) {
+        img.setAttribute('role', 'img');
+        if (img.alt) {
+          img.setAttribute('aria-label', img.alt);
+        }
+      }
+    });
+  });
+</script>
+
+<style>
+  .responsive-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 1rem auto;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .responsive-image.loaded {
+    opacity: 1;
+  }
+  
+  .image-container {
+    width: 100%;
+    margin: 1rem 0;
+    position: relative;
+  }
+  
+  /* Prevent layout shifts by keeping aspect ratio */
+  .image-container.has-ratio {
+    padding-top: var(--aspect-ratio);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .image-container.has-ratio img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+    /* Style for image captions */
+  .image-caption {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--sl-color-gray-3);
+    margin-top: 0.5rem;
+  }
+  
+  /* Controles para ampliar imagens em toque */
+  .image-container .zoom-controls {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    display: none;
+    gap: 0.5rem;
+    z-index: 10;
+  }
+  
+  .zoom-btn {
+    width: 32px;
+    height: 32px;
+    background-color: var(--sl-color-bg-nav);
+    color: var(--sl-color-text);
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+  
+  .zoom-btn:hover {
+    opacity: 1;
+  }
+  
+  /* Estilo para o modo de zoom ativo */
+  .image-container.zoomed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 1rem;
+  }
+  
+  .image-container.zoomed img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  }
+  
+  .image-container.zoomed .zoom-controls {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    display: flex;
+  }
+  
+  .image-container .close-zoom {
+    display: none;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 36px;
+    height: 36px;
+    background-color: var(--sl-color-accent);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.25rem;
+    cursor: pointer;
+    z-index: 1001;
+  }
+  
+  .image-container.zoomed .close-zoom {
+    display: block;
+  }
+  
+  @media (max-width: 768px) {
+    .image-container {
+      margin: 0.75rem 0;
+    }
+    
+    .image-caption {
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+    }
+    
+    .image-container .zoom-controls {
+      display: flex;
+    }
+    
+    /* Melhorar contraste em imagens para visualização em dispositivos móveis */
+    .responsive-image {
+      filter: brightness(1.05);
+    }
+</style>
+
+<div class={`image-container ${Astro.props.aspectRatio ? 'has-ratio' : ''}`} style={Astro.props.aspectRatio ? `--aspect-ratio: ${Astro.props.aspectRatio}` : ''}>
+  <img 
+    class="responsive-image" 
+    src={Astro.props.placeholder || ''} 
+    data-src={Astro.props.src} 
+    alt={Astro.props.alt || 'Imagem'} 
+    width={Astro.props.width} 
+    height={Astro.props.height}
+    loading="lazy"
+  />
+  {Astro.props.caption && (
+    <p class="image-caption">{Astro.props.caption}</p>
+  )}
+</div>

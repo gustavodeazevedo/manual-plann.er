@@ -1,0 +1,127 @@
+---
+// Layout.astro - Componente para aplicar layouts responsivos em todas as páginas
+import { ViewTransitions } from 'astro:transitions';
+---
+
+<script>
+// Definir tema escuro por padrão
+function setDarkTheme() {
+  const root = document.documentElement;
+  
+  // Define o atributo data-theme como 'dark'
+  root.setAttribute('data-theme', 'dark');
+  
+  // Armazena a preferência no localStorage
+  localStorage.setItem('starlight-theme', 'dark');
+  
+  // Atualiza o botão de alternância de tema, se existir
+  const themeToggle = document.querySelector('.theme-toggle');
+  if (themeToggle) {
+    themeToggle.setAttribute('aria-pressed', 'true');
+  }
+}
+
+// Função para verificar se o Starlight já tem seu próprio script de tema
+function initDarkTheme() {
+  // Se o Starlight ainda não definiu um tema (para não sobrescrever a escolha do usuário)
+  if (!localStorage.getItem('starlight-theme')) {
+    setDarkTheme();
+  }
+}
+
+// Executar imediatamente para evitar flash de tema claro
+initDarkTheme();
+
+// Script para ajustar elementos responsivos na página
+document.addEventListener('DOMContentLoaded', () => {
+  // Garantir que o tema escuro esteja ativo após o DOM ser carregado
+  initDarkTheme();
+
+  // Ajustar largura de tabelas quando necessário
+  const tables = document.querySelectorAll('table:not(.responsive-table)');
+  tables.forEach(table => {
+    if (!table.parentElement.classList.contains('responsive-table-container')) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'responsive-table-container';
+      table.parentNode.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    }
+  });
+
+  // Ajustar imagens para serem responsivas
+  const images = document.querySelectorAll('img:not(.responsive-image)');
+  images.forEach(img => {
+    img.classList.add('responsive-img');
+    img.setAttribute('loading', 'lazy');
+  });
+
+  // Melhorar acessibilidade em dispositivos móveis
+  const links = document.querySelectorAll('a');
+  links.forEach(link => {
+    if (!link.getAttribute('aria-label') && link.textContent.trim()) {
+      link.setAttribute('aria-label', link.textContent.trim());
+    }
+  });
+});
+
+// Adicionar classe ao body quando estiver em modo de visualização móvel
+const checkViewportSize = () => {
+  const isMobile = window.innerWidth <= 768;
+  document.body.classList.toggle('is-mobile-viewport', isMobile);
+};
+
+// Verificar no carregamento e quando a janela for redimensionada
+window.addEventListener('DOMContentLoaded', checkViewportSize);
+window.addEventListener('resize', checkViewportSize);
+</script>
+
+<style is:global>
+  /* Estilos globais para elementos básicos */
+  .responsive-img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Classe genérica para containers responsivos */
+  .responsive-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Estilos para melhorar a visualização em dispositivos móveis */
+  @media (max-width: 768px) {
+    /* Aumentar a área de toque */
+    .is-mobile-viewport a, 
+    .is-mobile-viewport button {
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+    
+    /* Reduzir tamanho de código para evitar overflow */
+    .is-mobile-viewport pre {
+      font-size: 0.85rem;
+    }
+  }
+
+  /* Ajustes específicos para telas muito pequenas */
+  @media (max-width: 480px) {
+    .is-mobile-viewport h1 {
+      font-size: 1.75rem;
+    }
+    
+    .is-mobile-viewport h2 {
+      font-size: 1.35rem;
+    }
+    
+    .is-mobile-viewport pre {
+      font-size: 0.8rem;
+    }
+  }
+</style>
+
+<ViewTransitions />
+
+<slot />

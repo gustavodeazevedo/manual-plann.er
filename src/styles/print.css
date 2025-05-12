@@ -1,0 +1,71 @@
+/* Estilos específicos para impressão */
+@media print {
+  /* Ocultar elementos de navegação e interação */
+  nav,
+  .sidebar,
+  .site-header,
+  .site-footer,
+  button,
+  .pagination,
+  .search,
+  .theme-toggle,
+  .social-icons,
+  .edit-on-github {
+    display: none !important;
+  }
+
+  /* Garantir que o conteúdo ocupe a página toda */
+  body,
+  .content,
+  main {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Melhorar legibilidade de texto */
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+    color: #000;
+    background: #fff;
+  }
+
+  /* Garantir que links sejam úteis em versão impressa */
+  a::after {
+    content: " (" attr(href) ")";
+    font-size: 0.9em;
+    font-style: italic;
+  }
+
+  /* Quebras de página adequadas */
+  h1,
+  h2,
+  h3 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Garantir que imagens não sejam quebradas */
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  /* Garantir que tabelas sejam legíveis */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  table,
+  th,
+  td {
+    border: 1px solid #000;
+  }
+
+  /* Redução de margens para economizar papel */
+  @page {
+    margin: 1.5cm;
+  }
+}

@@ -12,7 +12,7 @@ Este guia vai ajudá-lo a começar a usar o Plann.er rapidamente. Veremos como a
 O Plann.er é uma aplicação web que pode ser acessada através de qualquer navegador moderno. Não é necessário fazer download ou instalação.
 
 1. Abra seu navegador favorito (Chrome, Firefox, Safari, Edge)
-2. Acesse [https://plann-er.vercel.app](https://plann-er.vercel.app)
+2. Acesse o endereço do Plann.er fornecido pelo seu administrador
 3. Você será recebido pela tela de login/cadastro
 
 ## Navegação no Plann.er

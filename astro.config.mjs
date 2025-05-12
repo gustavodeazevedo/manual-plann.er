@@ -10,11 +10,70 @@ export default defineConfig({
 			logo: {
 				src: './src/assets/logo.svg',
 			},
+			defaultLocale: 'pt-br',
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/gustavodeazevedo/plann.er' },
 			],
 			customCss: [
 				'./src/styles/custom.css',
+				'./src/styles/print.css',
+			],
+			head: [
+				{
+					tag: 'meta',
+					attrs: {
+						name: 'viewport',
+						content: 'width=device-width, initial-scale=1.0, maximum-scale=5.0'
+					}
+				},
+				{
+					tag: 'meta',
+					attrs: {
+						name: 'theme-color',
+						content: '#18181b' // Alterado para a cor do tema escuro
+					}
+				},
+				{
+					tag: 'script',
+					attrs: {
+						src: '/scripts/theme.js',
+						defer: true
+					}
+				},
+				{
+					tag: 'script',
+					content: `
+						(function() {
+							// Aplicar tema escuro imediatamente para evitar flash de tema claro
+							if (!localStorage.getItem('starlight-theme')) {
+								document.documentElement.setAttribute('data-theme', 'dark');
+								localStorage.setItem('starlight-theme', 'dark');
+							}
+						})();
+					`
+				},
+				{
+					tag: 'meta',
+					attrs: {
+						name: 'apple-mobile-web-app-capable',
+						content: 'yes'
+					}
+				},
+				{
+					tag: 'link',
+					attrs: {
+						rel: 'preconnect',
+						href: 'https://fonts.googleapis.com'
+					}
+				},
+				{
+					tag: 'link',
+					attrs: {
+						rel: 'preconnect',
+						href: 'https://fonts.gstatic.com',
+						crossorigin: ''
+					}
+				}
 			],
 			sidebar: [
 				{
@@ -61,7 +120,7 @@ export default defineConfig({
 				{
 					label: 'FAQ',
 					items: [
-						{ label: 'Perguntas Frequentes', slug: 'faq/common-questions' },
+						{ label: 'Perguntas Comuns', slug: 'faq/common-questions' },
 					],
 				},
 			],
